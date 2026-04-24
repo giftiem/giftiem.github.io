@@ -125,7 +125,7 @@ Change the `site` option to the deployed site's URL.
 // astro.config.mjs
 
 export default defineConfig({
-  site: "https://astro-micro.vercel.app",
+  site: "https://giftiem.github.io",
   integrations: [tailwind(), sitemap(), mdx(), pagefind()],
   markdown: {
     shikiConfig: {
