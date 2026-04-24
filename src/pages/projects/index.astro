@@ -1,72 +1,28 @@
 ---
 import Layout from "@layouts/Layout.astro";
 import Container from "@components/Container.astro";
-import { SITE, HOME, SOCIALS } from "@consts";
 import ArrowCard from "@components/ArrowCard.astro";
-import Link from "@components/Link.astro";
+import { PROJECTS } from "@consts";
 import { getCollection } from "astro:content";
-import type { CollectionEntry } from "astro:content";
 
-const blog = (await getCollection("blog"))
-  .filter((post) => !post.data.draft)
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
-  .slice(0, SITE.NUM_POSTS_ON_HOMEPAGE);
-
-const projects: CollectionEntry<"projects">[] = (
-  await getCollection("projects")
-)
+const projects = (await getCollection("projects"))
   .filter((project) => !project.data.draft)
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
-  .slice(0, SITE.NUM_PROJECTS_ON_HOMEPAGE);
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
 
-<Layout title={HOME.TITLE} description={HOME.DESCRIPTION}>
+<Layout title={PROJECTS.TITLE} description={PROJECTS.DESCRIPTION}>
   <Container>
     <aside data-pagefind-ignore>
-      <h1 class="font-semibold text-black dark:text-white">
-        Gift Mphuthi
-      </h1>
-      <div class="space-y-16">
-        <section>
-          <article class="space-y-4">
-            <p>
-              I'm an AI-focused backend engineer building production-grade multi-agent systems, RAG pipelines, and LLM-powered workflows at enterprise scale.
+      <div class="space-y-10">
+        {projects.length === 0 ? (
+          <section class="animate space-y-4">
+            <h1 class="font-semibold text-black dark:text-white">Projects</h1>
+            <p class="text-black/70 dark:text-white/70">
+              Nothing published yet. I'm working on a comparison of Anthropic and OpenAI's agent APIs &mdash; that'll land here first.
             </p>
-            <p>
-              Currently at MTN building production AI systems across multiple operating companies. Based in Johannesburg.
-            </p>
-            <p>
-              <Link href="/about">Read more about me -></Link>
-            </p>
-          </article>
-        </section>
-
-        {blog.length > 0 && (
-          <section class="animate space-y-6">
-            <div class="flex flex-wrap items-center justify-between gap-y-2">
-              <h2 class="font-semibold text-black dark:text-white">
-                Latest posts
-              </h2>
-              <Link href="/blog"> See all posts </Link>
-            </div>
-            <ul class="not-prose flex flex-col gap-4">
-              {blog.map((post) => (
-                <li>
-                  <ArrowCard entry={post} />
-                </li>
-              ))}
-            </ul>
           </section>
-        )}
-
-        {projects.length > 0 && (
-          <section class="animate space-y-6">
-            <div class="flex flex-wrap items-center justify-between gap-y-2">
-              <h2 class="font-semibold text-black dark:text-white">
-                Recent projects
-              </h2>
-              <Link href="/projects"> See all projects </Link>
-            </div>
+        ) : (
+          <section class="animate space-y-4">
             <ul class="not-prose flex flex-col gap-4">
               {projects.map((project) => (
                 <li>
@@ -76,33 +32,6 @@ const projects: CollectionEntry<"projects">[] = (
             </ul>
           </section>
         )}
-
-        <section class="animate space-y-4">
-          <h2 class="font-semibold text-black dark:text-white">
-            Let's connect
-          </h2>
-          <article>
-            <p>
-              If you'd like to get in touch, you'll find me on:
-            </p>
-          </article>
-          <ul class="not-prose flex flex-wrap gap-2">
-            {
-              SOCIALS.map((SOCIAL) => (
-                <li class="flex gap-x-2 text-nowrap">
-                  <Link
-                    href={SOCIAL.HREF}
-                    external
-                    aria-label={`${SITE.TITLE} on ${SOCIAL.NAME}`}
-                  >
-                    {SOCIAL.NAME}
-                  </Link>
-                  {"/"}
-                </li>
-              ))
-            }
-          </ul>
-        </section>
       </div>
     </aside>
   </Container>
